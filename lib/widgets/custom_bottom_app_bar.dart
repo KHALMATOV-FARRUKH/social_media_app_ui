@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:social_media_app_ui/screens/home_screen.dart';
-import 'package:social_media_app_ui/screens/profile_screen.dart';
-import 'package:social_media_app_ui/screens/search_screen.dart';
+import 'package:social_media_app_ui/screens/screens.dart';
 
 class CustomBottomAppBar extends StatelessWidget {
   const CustomBottomAppBar({
     Key? key,
   }) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
+      notchMargin: 10,
       color: Colors.black,
       child: SizedBox(
         height: 75,
@@ -23,36 +21,46 @@ class CustomBottomAppBar extends StatelessWidget {
                 Navigator.popAndPushNamed(context, HomeScreen.routeName);
               },
               color: Colors.white,
-              icon: const Icon(Icons.home),
               iconSize: 30,
+              icon: const Icon(
+                Icons.home,
+              ),
             ),
             IconButton(
               onPressed: () {
                 Navigator.popAndPushNamed(context, SearchScreen.routeName);
               },
               color: Colors.white,
-              icon: const Icon(Icons.search),
               iconSize: 30,
+              icon: const Icon(
+                Icons.search,
+              ),
             ),
             IconButton(
               onPressed: () {},
               color: Colors.white,
-              icon: const Icon(Icons.add_circle),
               iconSize: 30,
+              icon: const Icon(
+                Icons.add_circle,
+              ),
             ),
             IconButton(
               onPressed: () {},
               color: Colors.white,
-              icon: const Icon(Icons.message),
               iconSize: 30,
+              icon: const Icon(
+                Icons.message,
+              ),
             ),
             IconButton(
               onPressed: () {
                 Navigator.pushNamed(context, ProfileScreen.routeName);
               },
               color: Colors.white,
-              icon: const Icon(Icons.person),
               iconSize: 30,
+              icon: const Icon(
+                Icons.person,
+              ),
             ),
           ],
         ),

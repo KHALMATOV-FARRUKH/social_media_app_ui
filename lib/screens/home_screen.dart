@@ -1,42 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:social_media_app_ui/models/post_model.dart';
-import 'package:social_media_app_ui/widgets/custom_bottom_app_bar.dart';
-import 'package:social_media_app_ui/widgets/custom_video_player.dart';
+import 'package:social_media_app_ui/models/models.dart';
+import 'package:social_media_app_ui/widgets/widgets.dart';
 
 
-class HomeScreen extends StatelessWidget {
-
+class HomeScreen extends StatefulWidget {
   static const routeName = '/';
 
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  List<Post> posts = Post.posts;
 
   @override
   Widget build(BuildContext context) {
-
-    List<Post> posts = Post.posts;
+    Post? post = ModalRoute.of(context)!.settings.arguments as Post?;
+    if (post != null) posts.insert(0, post);
 
     return Scaffold(
-      backgroundColor: Colors.black,
       appBar: const _CustomAppBar(),
       bottomNavigationBar: const CustomBottomAppBar(),
       extendBodyBehindAppBar: true,
-      body: SingleChildScrollView(
-        child: ListView(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          padding: EdgeInsets.zero,
-          children: posts.map((post) {
-            return CustomVideoPlayer(post: post);
-          }).toList(),
-        ),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            child: ListView(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              padding: EdgeInsets.zero,
+              children: posts.map((post) {
+                return CustomVideoPlayer(post: post);
+              }).toList(),
+            ),
+          ),
+        ],
       ),
     );
   }
 }
-
-
-
-
 
 class _CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   const _CustomAppBar({
@@ -47,7 +54,7 @@ class _CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.transparent,
-      elevation: 0.0,
+      elevation: 0,
       centerTitle: true,
       title: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -60,9 +67,9 @@ class _CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   }
 
   TextButton _buildButton(
-    BuildContext context,
-    String text,
-  ) {
+      BuildContext context,
+      String text,
+      ) {
     return TextButton(
       onPressed: () {},
       style: TextButton.styleFrom(
@@ -71,9 +78,9 @@ class _CustomAppBar extends StatelessWidget with PreferredSizeWidget {
       child: Text(
         text,
         style: Theme.of(context).textTheme.titleMedium!.copyWith(
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        ),
       ),
     );
   }

@@ -25,6 +25,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
     controller.initialize().then((_) {
       setState(() {});
     });
+
     super.initState();
   }
 
@@ -39,7 +40,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
     return VisibilityDetector(
       key: Key(controller.dataSource),
       onVisibilityChanged: (visibilityInfo) {
-        if (visibilityInfo.visibleFraction > 0.5) {
+        if (visibilityInfo.visibleFraction > 0.50) {
           controller.play();
         } else {
           if (mounted) {
@@ -47,7 +48,8 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
           }
         }
       },
-      child: GestureDetector(
+      child: controller.value.isInitialized
+          ? GestureDetector(
         onTap: () {
           setState(() {
             if (controller.value.isPlaying) {
@@ -84,7 +86,8 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
             ],
           ),
         ),
-      ),
+      )
+          : Container(),
     );
   }
 
@@ -98,11 +101,21 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: const [
-            _VideoActions(icon: Icons.favorite, value: '11.4k'),
+            _VideoAction(
+              icon: Icons.favorite,
+              value: '11.4k',
+            ),
             SizedBox(height: 10),
-            _VideoActions(icon: Icons.comment, value: '1.78k'),
+            _VideoAction(
+              icon: Icons.comment,
+              value: '1.4k',
+            ),
             SizedBox(height: 10),
-            _VideoActions(icon: Icons.forward_rounded, value: '385'),
+            _VideoAction(
+              icon: Icons.forward_rounded,
+              value: '500',
+            ),
+            SizedBox(height: 50),
           ],
         ),
       ),
@@ -125,14 +138,15 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
           width: MediaQuery.of(context).size.width * 0.75,
           padding: const EdgeInsets.all(20.0),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 '@${widget.post.user.username}',
-                style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
+                style: Theme.of(context)
+                    .textTheme
+                    .titleSmall!
+                    .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 5),
               Text(
@@ -151,8 +165,8 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
   }
 }
 
-class _VideoActions extends StatelessWidget {
-  const _VideoActions({
+class _VideoAction extends StatelessWidget {
+  const _VideoAction({
     Key? key,
     required this.icon,
     required this.value,
@@ -167,15 +181,17 @@ class _VideoActions extends StatelessWidget {
       children: [
         Material(
           color: Colors.transparent,
-          child: Ink(
-            decoration: const ShapeDecoration(
-              color: Colors.black,
-              shape: CircleBorder(),
-            ),
-            child: IconButton(
-              onPressed: () {},
-              icon: Icon(icon),
-              color: Colors.white,
+          child: Center(
+            child: Ink(
+              decoration: const ShapeDecoration(
+                color: Colors.black,
+                shape: CircleBorder(),
+              ),
+              child: IconButton(
+                icon: Icon(icon),
+                color: Colors.white,
+                onPressed: () {},
+              ),
             ),
           ),
         ),
